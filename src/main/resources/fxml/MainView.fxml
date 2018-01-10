@@ -96,7 +96,7 @@
                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                      </columnResizePolicy>
                   </TableView>
-                  <HBox prefHeight="31.0" prefWidth="295.0">
+                  <HBox prefHeight="22.0" prefWidth="295.0">
                      <children>
                         <Label fx:id="labService" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="14.0" prefWidth="247.0" HBox.hgrow="ALWAYS">
                            <HBox.margin>

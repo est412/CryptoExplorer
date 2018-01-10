@@ -70,7 +70,9 @@ public class Engines {
 
     public static String buldRequest() {
         StringBuilder sb = new StringBuilder(ENGINE_SELECT_ALL);
-        if (!Filter.isEmpty()) {
+        if (Filter.getEngineId() >= 0) {
+            sb.append(" where ").append(WHERE_ENGINE_EQ).append(Filter.getEngineId());
+        } else if (!Filter.isEmpty()) {
             sb.append(", ").append(FROM_SERVICE);
             if (Filter.getAlgorithmId() >= 0) sb.append(", ").append(FROM_ALGORITHM);
             if (Filter.getProviderId() >= 0) sb.append(", ").append(FROM_PROVIDER);

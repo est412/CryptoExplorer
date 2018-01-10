@@ -166,7 +166,10 @@ public class MainViewController {
             labEngine.textProperty().set(entity.getName());
             btnEngineClear.disableProperty().set(false);
         }
-        refreshTables(tblEngines);
+        refreshTables();
+        if (Filter.getEngineId() != -1) {
+            tblEngines.getSelectionModel().selectFirst();
+        }
     }
 
     @FXML
@@ -181,7 +184,11 @@ public class MainViewController {
             labAlgorithm.textProperty().set(entity.getName());
             btnAlgorithmClear.disableProperty().set(false);
         }
-        refreshTables(tblAlgorithms);
+        //refreshTables(tblAlgorithms);
+        refreshTables();
+        if (Filter.getAlgorithmId() != -1) {
+            tblAlgorithms.getSelectionModel().selectFirst();
+        }
     }
     
     @FXML
@@ -196,7 +203,11 @@ public class MainViewController {
             labProvider.textProperty().set(entity.getName()+" v."+entity.getVersion()+" ("+entity.getClassName()+")");
             btnProviderClear.disableProperty().set(false);
         }
-        refreshTables(tblProviders);
+        //refreshTables(tblProviders);
+    	refreshTables();
+    	if (Filter.getProviderId() != -1) {
+            tblProviders.getSelectionModel().selectFirst();
+        }
     }
 
     // TODO переделать фильтр и передавать туда объект
@@ -212,7 +223,10 @@ public class MainViewController {
             labService.textProperty().set(entity.getName());
             btnServiceClear.disableProperty().set(false);
         }
-        refreshTables(tblServiceClasses);
+        refreshTables();
+        if (Filter.getServiceClassId() != -1) {
+            tblServiceClasses.getSelectionModel().selectFirst();
+        }
     }
 
     @FXML

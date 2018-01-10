@@ -36,6 +36,7 @@ public interface Requests {
 
     String PROVIDER_INSERT = "insert into provider (name, version, class_name, info) values (?, ?, ?, ?)";
     String PROVIDER_SELECT_ALL = "select distinct p.id, p.name, p.version, p.class_name, p.info from " + FROM_PROVIDER;
+    String PROVIDER_SELECT_ONE = PROVIDER_SELECT_ALL + " " + WHERE_PROVIDER_EQ + " ?";
     String PROVIDER_DELETE_ALL = "delete from provider";
 
     String ENGINE_INSERT = "insert into engine (name) values (?)";
