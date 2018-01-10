@@ -82,7 +82,9 @@ public class Algorithms {
 
     public static String buldRequest() {
         StringBuilder sb = new StringBuilder(ALGORITHM_SELECT_ALL);
-        if (!Filter.isEmpty()) {
+        if (Filter.getAlgorithmId() >= 0) {
+            sb.append(" where ").append(WHERE_ALGORITHM_EQ).append(Filter.getAlgorithmId());
+        } else if (!Filter.isEmpty()) {
             sb.append(", ").append(FROM_SERVICE);
             if (Filter.getEngineId() >= 0) sb.append(", ").append(FROM_ENGINE);
             if (Filter.getProviderId() >= 0) sb.append(", ").append(FROM_PROVIDER);

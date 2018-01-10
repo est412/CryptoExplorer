@@ -73,7 +73,9 @@ public class ServiceClasses {
 
     public static String buldRequest() {
         StringBuilder sb = new StringBuilder(SERVICE_CLASS_SELECT_ALL);
-        if (!Filter.isEmpty()) {
+        if (Filter.getServiceClassId() >= 0) {
+            sb.append(" where ").append(WHERE_SERVICE_CLASS_EQ).append(Filter.getServiceClassId());
+        } else if (!Filter.isEmpty()) {
             sb.append(", ").append(FROM_SERVICE);
             if (Filter.getAlgorithmId() >= 0) sb.append(", ").append(FROM_ALGORITHM);
             if (Filter.getEngineId() >= 0) sb.append(", ").append(FROM_ENGINE);
