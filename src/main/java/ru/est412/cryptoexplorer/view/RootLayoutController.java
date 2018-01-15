@@ -22,12 +22,11 @@ public class RootLayoutController {
     @FXML
     private void onMenuAbout() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("About Crypto Explorer");
+        Package pkg = this.getClass().getPackage();
+        alert.setTitle("About " + pkg.getImplementationTitle());
         alert.setHeaderText(null);
-        alert.setContentText("Crypto Explorer 0.1.0\n"+
-                "Release date: 2017-12-23\n"+
-                "Copyright (c) 2017, Eduard Tukhvatullin\n"+
-                "est412@gmail.com");
+        alert.setContentText("Version: " + pkg.getImplementationVersion() +"\n"+
+                "Copyright: " + pkg.getImplementationVendor() + "\n");
         alert.showAndWait();
     }
 
