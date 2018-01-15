@@ -27,7 +27,7 @@ public class Engines {
         nameToId.clear();
         idToName.clear();
 
-        PreparedStatement ps = DBh2.getPreparedStatement(ENGINE_DELETE_ALL);
+        PreparedStatement ps = DBh2.getBufferedPreparedStatement(ENGINE_DELETE_ALL);
         ps.execute();
         ps.getConnection().commit();
 
@@ -38,7 +38,7 @@ public class Engines {
             }
         }
 
-        ps = DBh2.getPreparedStatement(ENGINE_INSERT);
+        ps = DBh2.getBufferedPreparedStatement(ENGINE_INSERT);
         for (String engine : nameToId.keySet()) {
             ps.setString(1, engine);
             ps.executeUpdate();
@@ -52,12 +52,33 @@ public class Engines {
 
     public static List<Entity> getEntities() throws SQLException {
         List<Entity> entities = new ArrayList<>();
-        PreparedStatement ps = DBh2.getPreparedStatement(buldRequest());
+        PreparedStatement ps = prepareStatement();
         ResultSet rs = ps.executeQuery();
         while (rs.next()) {
             entities.add(new Entity(rs));
         }
+        //rs.close();
+        //ps.close();
         return entities;
+    }
+
+    public static PreparedStatement prepareStatement() throws SQLException {
+        PreparedStatement ps;
+        if (Filter.isEmpty()) {
+            ps = DBh2.getBufferedPreparedStatement(ENGINE_SELECT_ALL);
+        } else if (Filter.getEngineId() >= 0) {
+            ps = DBh2.getBufferedPreparedStatement(ENGINE_SELECT_ONE);
+            ps.setLong(1, Filter.getEngineId());
+        } else {
+            ps = DBh2.getBufferedPreparedStatement(ENGINE_SELECT);
+            ps.setLong(1, Filter.getAlgorithmId());
+            ps.setLong(2, Filter.getAlgorithmId());
+            ps.setLong(3, Filter.getProviderId());
+            ps.setLong(4, Filter.getProviderId());
+            ps.setLong(5, Filter.getServiceClassId());
+            ps.setLong(6, Filter.getServiceClassId());
+        }
+        return ps;
     }
 
     public static String getName(long id) {
@@ -66,26 +87,6 @@ public class Engines {
 
     public static long getId(String name) {
         return nameToId.get(name);
-    }
-
-    public static String buldRequest() {
-        StringBuilder sb = new StringBuilder(ENGINE_SELECT_ALL);
-        if (Filter.getEngineId() >= 0) {
-            sb.append(" where ").append(WHERE_ENGINE_EQ).append(Filter.getEngineId());
-        } else if (!Filter.isEmpty()) {
-            sb.append(", ").append(FROM_SERVICE);
-            if (Filter.getAlgorithmId() >= 0) sb.append(", ").append(FROM_ALGORITHM);
-            if (Filter.getProviderId() >= 0) sb.append(", ").append(FROM_PROVIDER);
-            if (Filter.getServiceClassId() >= 0) sb.append(", ").append(FROM_SERVICE_CLASS);
-
-            sb.append(" where ");
-            sb.append(WHERE_ENGINE_REL);
-            if (Filter.getAlgorithmId() >= 0) sb.append(" and ").append(WHERE_ALGORITHM_REL).append(" and ").append(WHERE_ALGORITHM_EQ).append(Filter.getAlgorithmId());
-            if (Filter.getProviderId() >= 0) sb.append(" and ").append(WHERE_PROVIDER_REL).append(" and ").append(WHERE_PROVIDER_EQ).append(Filter.getProviderId());
-            if (Filter.getServiceClassId() >= 0) sb.append(" and ").append(WHERE_SERVICE_CLASS_REL).append(" and ").append(WHERE_SERVICE_CLASS_EQ).append(Filter.getServiceClassId());
-        }
-        sb.append(" ").append(ORDER_BY_DEFAULT);
-        return sb.toString();
     }
 
     /**

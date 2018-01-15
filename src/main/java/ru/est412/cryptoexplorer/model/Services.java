@@ -25,14 +25,14 @@ public class Services {
         Algorithms.load();
         ServiceClasses.load();
 
-        PreparedStatement ps = DBh2.getPreparedStatement(SERVICE_DELETE_ALL);
+        PreparedStatement ps = DBh2.getBufferedPreparedStatement(SERVICE_DELETE_ALL);
         ps.execute();
-        ps = DBh2.getPreparedStatement(ALIAS_DELETE_ALL);
+        ps = DBh2.getBufferedPreparedStatement(ALIAS_DELETE_ALL);
         ps.execute();
         ps.getConnection().commit();
 
-        PreparedStatement psS = DBh2.getPreparedStatement(SERVICE_INSERT);
-        PreparedStatement psA = DBh2.getPreparedStatement(ALIAS_INSERT);
+        PreparedStatement psS = DBh2.getBufferedPreparedStatement(SERVICE_INSERT);
+        PreparedStatement psA = DBh2.getBufferedPreparedStatement(ALIAS_INSERT);
         for (Provider provider : Security.getProviders()) {
             for (Provider.Service service : provider.getServices()) {
                 psS.setLong(1, Providers.getId(provider.getName()));

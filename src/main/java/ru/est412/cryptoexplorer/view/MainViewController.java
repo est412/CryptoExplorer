@@ -184,7 +184,6 @@ public class MainViewController {
             labAlgorithm.textProperty().set(entity.getName());
             btnAlgorithmClear.disableProperty().set(false);
         }
-        //refreshTables(tblAlgorithms);
         refreshTables();
         if (Filter.getAlgorithmId() != -1) {
             tblAlgorithms.getSelectionModel().selectFirst();
@@ -203,7 +202,6 @@ public class MainViewController {
             labProvider.textProperty().set(entity.getName()+" v."+entity.getVersion()+" ("+entity.getClassName()+")");
             btnProviderClear.disableProperty().set(false);
         }
-        //refreshTables(tblProviders);
     	refreshTables();
     	if (Filter.getProviderId() != -1) {
             tblProviders.getSelectionModel().selectFirst();
@@ -254,15 +252,10 @@ public class MainViewController {
     }
 
     public void refreshTables() throws SQLException {
-        refreshTables(null);
+        tblProviders.setItems(FXCollections.observableArrayList(Providers.getEntities()));
+        tblEngines.setItems(FXCollections.observableArrayList(Engines.getEntities()));
+        tblAlgorithms.setItems(FXCollections.observableArrayList(Algorithms.getEntities()));
+        tblServiceClasses.setItems(FXCollections.observableArrayList(ServiceClasses.getEntities()));
     }
 
-    public void refreshTables(TableView except) throws SQLException {
-        if (except != tblProviders) tblProviders.setItems(FXCollections.observableArrayList(Providers.getEntities()));
-        if (except != tblEngines) tblEngines.setItems(FXCollections.observableArrayList(Engines.getEntities()));
-        if (except != tblAlgorithms) tblAlgorithms.setItems(FXCollections.observableArrayList(Algorithms.getEntities()));
-        if (except != tblServiceClasses) tblServiceClasses.setItems(FXCollections.observableArrayList(ServiceClasses.getEntities()));
-    }
-
-    
 }

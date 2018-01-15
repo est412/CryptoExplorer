@@ -30,7 +30,7 @@ public class Algorithms {
         nameToId.clear();
         idToName.clear();
 
-        PreparedStatement ps = DBh2.getPreparedStatement(ALGORITHM_DELETE_ALL);
+        PreparedStatement ps = DBh2.getBufferedPreparedStatement(ALGORITHM_DELETE_ALL);
         ps.execute();
         ps.getConnection().commit();
 
@@ -48,7 +48,7 @@ public class Algorithms {
             }
         }
 
-        ps = DBh2.getPreparedStatement(ALGORITHM_INSERT);
+        ps = DBh2.getBufferedPreparedStatement(ALGORITHM_INSERT);
         for (String algorithm : nameToId.keySet()) {
             ps.setString(1, algorithm);
             ps.executeUpdate();
@@ -61,15 +61,35 @@ public class Algorithms {
     }
 
     // TODO убрать дублирование
-    // TODO закрывать rs и ps??? проверить на утечку памяти
     public static List<Entity> getEntities() throws SQLException {
         List<Entity> algorithmEntities = new ArrayList<>();
-        PreparedStatement ps = DBh2.getPreparedStatement(buldRequest());
+        PreparedStatement ps = prepareStatement();
         ResultSet rs = ps.executeQuery();
         while (rs.next()) {
             algorithmEntities.add(new Entity(rs));
         }
+        //rs.close();
+        //ps.close();
         return algorithmEntities;
+    }
+
+    public static PreparedStatement prepareStatement() throws SQLException {
+        PreparedStatement ps;
+        if (Filter.isEmpty()) {
+            ps = DBh2.getBufferedPreparedStatement(ALGORITHM_SELECT_ALL);
+        } else if (Filter.getAlgorithmId() >= 0) {
+            ps = DBh2.getBufferedPreparedStatement(ALGORITHM_SELECT_ONE);
+            ps.setLong(1, Filter.getAlgorithmId());
+        } else {
+            ps = DBh2.getBufferedPreparedStatement(ALGORITHM_SELECT);
+            ps.setLong(1, Filter.getEngineId());
+            ps.setLong(2, Filter.getEngineId());
+            ps.setLong(3, Filter.getProviderId());
+            ps.setLong(4, Filter.getProviderId());
+            ps.setLong(5, Filter.getServiceClassId());
+            ps.setLong(6, Filter.getServiceClassId());
+        }
+        return ps;
     }
 
     public static String getName(long id) {
@@ -80,25 +100,6 @@ public class Algorithms {
         return nameToId.get(name);
     }
 
-    public static String buldRequest() {
-        StringBuilder sb = new StringBuilder(ALGORITHM_SELECT_ALL);
-        if (Filter.getAlgorithmId() >= 0) {
-            sb.append(" where ").append(WHERE_ALGORITHM_EQ).append(Filter.getAlgorithmId());
-        } else if (!Filter.isEmpty()) {
-            sb.append(", ").append(FROM_SERVICE);
-            if (Filter.getEngineId() >= 0) sb.append(", ").append(FROM_ENGINE);
-            if (Filter.getProviderId() >= 0) sb.append(", ").append(FROM_PROVIDER);
-            if (Filter.getServiceClassId() >= 0) sb.append(", ").append(FROM_SERVICE_CLASS);
-
-            sb.append(" where ");
-            sb.append(WHERE_ALGORITHM_REL);
-            if (Filter.getEngineId() >= 0) sb.append(" and ").append(WHERE_ENGINE_REL).append(" and ").append(WHERE_ENGINE_EQ).append(Filter.getEngineId());
-            if (Filter.getProviderId() >= 0) sb.append(" and ").append(WHERE_PROVIDER_REL).append(" and ").append(WHERE_PROVIDER_EQ).append(Filter.getProviderId());
-            if (Filter.getServiceClassId() >= 0) sb.append(" and ").append(WHERE_SERVICE_CLASS_REL).append(" and ").append(WHERE_SERVICE_CLASS_EQ).append(Filter.getServiceClassId());
-        }
-        sb.append(" ").append(ORDER_BY_DEFAULT);
-        return sb.toString();
-    }
 
     // TODO оптимизировать везде классы Entity
     public static class Entity {
@@ -140,4 +141,5 @@ public class Algorithms {
         }
 
     }
+
 }
