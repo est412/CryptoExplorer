@@ -6,6 +6,7 @@
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
@@ -15,6 +16,16 @@
         <items>
             <VBox prefHeight="194.0" prefWidth="263.0">
                <children>
+                  <HBox>
+                     <children>
+                        <TextField fx:id="txtFldProviderFilter" promptText="filter" HBox.hgrow="ALWAYS">
+                           <HBox.margin>
+                              <Insets left="5.0" right="5.0" />
+                           </HBox.margin>
+                        </TextField>
+                        <Button fx:id="btnProviderFilterClear" disable="true" mnemonicParsing="false" onAction="#onActBtnProviderFilterClear" text="x" />
+                     </children>
+                  </HBox>
                   <TableView fx:id="tblProviders" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onMouseClicked="#onClickProvidersTable" VBox.vgrow="ALWAYS">
                     <columns>
                       <TableColumn fx:id="colProviderName" prefWidth="133.0" text="Provider" />
@@ -39,7 +50,17 @@
             </VBox>
             <VBox prefHeight="200.0" prefWidth="100.0">
                <children>
-                  <TableView fx:id="tblEngines" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onMouseClicked="#onClickEnginesTable" VBox.vgrow="ALWAYS">
+                  <HBox>
+                     <children>
+                        <TextField fx:id="txtFldEngineFilter" promptText="filter" HBox.hgrow="ALWAYS">
+                           <HBox.margin>
+                              <Insets left="5.0" right="5.0" />
+                           </HBox.margin>
+                        </TextField>
+                        <Button fx:id="btnEngineFilterClear" disable="true" mnemonicParsing="false" onAction="#onActBtnEngineFilterClear" text="x" />
+                     </children>
+                  </HBox>
+                  <TableView fx:id="tblEngines" editable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onMouseClicked="#onClickEnginesTable" VBox.vgrow="ALWAYS">
                     <columns>
                       <TableColumn fx:id="colEngineName" prefWidth="304.0" text="Engine (Service Type)" />
                     </columns>
@@ -64,6 +85,16 @@
         <items>
             <VBox prefHeight="200.0" prefWidth="100.0">
                <children>
+                  <HBox>
+                     <children>
+                        <TextField fx:id="txtFldAlgorithmFilter" promptText="filter" HBox.hgrow="ALWAYS">
+                           <HBox.margin>
+                              <Insets left="5.0" right="5.0" />
+                           </HBox.margin>
+                        </TextField>
+                        <Button fx:id="btnAlgorithmFilterClear" disable="true" mnemonicParsing="false" onAction="#onActBtnAlgorithmFilterClear" text="x" />
+                     </children>
+                  </HBox>
                   <TableView fx:id="tblAlgorithms" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onMouseClicked="#onClickAlgorithmsTable" VBox.vgrow="ALWAYS">
                     <columns>
                       <TableColumn fx:id="colAlgorithmName" prefWidth="285.0" text="Algorithm" />
@@ -86,6 +117,16 @@
             </VBox>
             <VBox prefHeight="200.0" prefWidth="100.0">
                <children>
+                  <HBox>
+                     <children>
+                        <TextField fx:id="txtFldServiceFilter" promptText="filter" HBox.hgrow="ALWAYS">
+                           <HBox.margin>
+                              <Insets left="5.0" right="5.0" />
+                           </HBox.margin>
+                        </TextField>
+                        <Button fx:id="btnServiceFilterClear" disable="true" mnemonicParsing="false" onAction="#onActBtnServiceFilterClear" text="x" />
+                     </children>
+                  </HBox>
                   <TableView fx:id="tblServiceClasses" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onMouseClicked="#onClickServiceClassesTable" prefHeight="260.0" prefWidth="295.0" VBox.vgrow="ALWAYS">
                     <columns>
                       <TableColumn fx:id="colServiceClass" prefWidth="303.0" text="Service class" />
